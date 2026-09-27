@@ -1,0 +1,16 @@
+export const GRAVITY      = 1800;
+export const MAX_FALL     = 900;
+export const PLAYER_SPEED = 380;
+export const JUMP_FORCE   = -640;
+export const DASH_SPEED   = 900;
+export const DASH_DUR     = 0.16;
+export const IFRAMES_DUR  = 0.4;
+export const SLASH_DUR    = 0.12;
+export const SLASH_ARC_DUR= 0.15;
+export const HITSTOP_DUR  = 0.05;
+export const SHAKE_DECAY  = 8;
+export const HP_REGEN     = 3;   // HP per second
+export const CONTACT_DMG  = 5;
+export const ORB_DMG      = 7;
+export const NECTAR_SPEED = 180;
+export const BOSS_HP      = 500;
