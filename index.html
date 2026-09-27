@@ -5,18 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Banan-odyssey: Tartarus</title>
   
-  <!-- Classical Mythological Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
   
-  <!-- Your untouched external stylesheet for core game UI/Canvas positioning -->
   <link rel="stylesheet" href="css/style.css">
 
-  <!-- Internal CSS strictly for the Greek Web Theme & Lore so it doesn't break external files -->
   <style>
+    /* CRITICAL OVERRIDES: Forces the page to allow vertical scrolling */
+    html, body {
+      overflow-y: auto !important;
+      overflow-x: hidden !important; 
+      height: auto !important;
+      min-height: 100vh !important;
+    }
+
     body {
-      background-color: #050505; /* Fallback deep background */
+      background-color: #050505; 
       margin: 0;
       padding: 20px 0;
     }
@@ -36,7 +41,7 @@
     #header h1 {
       font-family: 'Cinzel Decorative', serif;
       font-size: 2.5rem;
-      color: #d4af37; /* Tarnished Gold */
+      color: #d4af37; 
       text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
       margin: 0 0 5px 0;
     }
@@ -44,7 +49,7 @@
     #header h2 {
       font-family: 'Cinzel', serif;
       font-size: 1.2rem;
-      color: #8b0000; /* Deep Blood Red */
+      color: #8b0000; 
       letter-spacing: 4px;
       margin: 0;
     }
@@ -62,7 +67,6 @@
       gap: 20px;
     }
 
-    /* Pillars to frame the canvas */
     .greek-pillar {
       width: 45px;
       background: linear-gradient(to bottom, #0a0a0a, #1f1f1f, #0a0a0a);
@@ -72,7 +76,6 @@
       border-radius: 4px;
     }
 
-    /* Stylized Controls */
     #controls {
       text-align: center;
       margin: 20px auto;
@@ -94,7 +97,6 @@
       margin: 0 4px;
     }
 
-    /* Lore Section */
     #lore-section {
       max-width: 900px;
       margin: 40px auto;
@@ -164,17 +166,14 @@
 <body>
   
 <div id="temple-wrapper">
-  <!-- Thematic Header -->
   <div id="header">
     <h1><span class="greek-ornament">✦</span> THE BANAN-ODYSSEY <span class="greek-ornament">✦</span></h1>
     <h2>DESCENT INTO TARTARUS</h2>
   </div>
 
-  <!-- Main Game Layout with Structural Pillars -->
   <div id="gameLayout">
     <div class="greek-pillar left-pillar"></div>
 
-    <!-- Core Game Elements (IDs match your JS/CSS perfectly) -->
     <div id="gameContainer">
       <div id="ui">
         <div id="hpBar"><div id="hpFill" style="width:100%"></div></div>
@@ -189,7 +188,6 @@
   </div>
 </div>
 
-<!-- Stylized Controls -->
 <div id="controls">
   <kbd>A/D</kbd> MOVE &nbsp;🏺&nbsp; 
   <kbd>SPACE/W</kbd> JUMP &nbsp;🏺&nbsp; 
@@ -197,7 +195,6 @@
   <kbd>CLICK/J</kbd> SLASH
 </div>
 
-<!-- Mythological Lore Section -->
 <div id="lore-section">
   <div class="lore-divider"><span class="greek-ornament">✦</span> 🏺 <span class="greek-ornament">✦</span></div>
   <h3>The Epic of the Chthonic Kitchen</h3>
@@ -221,7 +218,16 @@
   <div class="lore-divider"><span class="greek-ornament">✦</span> 🏺 <span class="greek-ornament">✦</span></div>
 </div>
 
-<!-- Core Engine Boot Sequence -->
 <script type="module" src="js/main.js"></script>
+
+<!-- CRITICAL FIX: Stops arrow keys and spacebar from scrolling the page while playing -->
+<script>
+  window.addEventListener("keydown", function(e) {
+    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }
+  }, false);
+</script>
+
 </body>
 </html>
