@@ -10,29 +10,24 @@
 <link rel="stylesheet" href="css/style.css">
 
 <style>
-  /* 
-    CRITICAL OVERRIDES: 
-    Forces page scrolling and applies the Dark Greek aesthetic.
-  */
   html, body {
     overflow-y: auto !important;
     overflow-x: hidden !important;
     height: auto !important;
     min-height: 100vh !important;
-    background-color: #080505 !important; /* Deep Stygian black/red */
+    background-color: #080505 !important; 
     background-image: radial-gradient(circle at center, #1a0a0a 0%, #050505 100%) !important;
     margin: 0 !important;
     padding: 20px 0 !important;
     font-family: 'Cinzel', serif !important;
   }
 
-  /* Shrinks and centers the game box with a Greek Double Gold border */
   #gameContainer {
     width: 100% !important;
     max-width: 900px !important; 
     margin: 0 auto 20px auto !important;
     position: relative !important;
-    border: 6px double #d4af37 !important; /* Classical gold border */
+    border: 6px double #d4af37 !important; 
     border-radius: 4px !important;
     box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 30px rgba(212, 175, 55, 0.15) !important;
     background-color: #111 !important;
@@ -42,15 +37,14 @@
     display: block !important;
     width: 100% !important;
     height: auto !important;
-    aspect-ratio: 16/9 !important;
     background-color: transparent !important;
   }
 
-  /* FIX: Forces the UI to spread across the top evenly */
   #ui {
     position: absolute !important;
-    top: 0 !important;
+    top: 20px !important;
     left: 0 !important;
+    transform: none !important;
     width: 100% !important;
     box-sizing: border-box !important;
     padding: 15px 25px !important;
@@ -61,18 +55,16 @@
     color: #d4af37 !important;
     z-index: 10 !important;
     pointer-events: none !important;
-    text-shadow: 2px 2px 4px #000000, 0 0 10px rgba(0,0,0,0.8) !important; /* High contrast text */
+    text-shadow: 2px 2px 4px #000000, 0 0 10px rgba(0,0,0,0.8) !important; 
     font-weight: 700 !important;
     letter-spacing: 1px !important;
   }
 
-  /* Ensures individual UI children don't collapse */
   #ui > div {
     display: flex !important;
     align-items: center !important;
   }
 
-  /* Stylized Classical Health Bar */
   #hpBar {
     width: 180px !important;
     height: 14px !important;
@@ -83,11 +75,10 @@
 
   #hpFill {
     height: 100% !important;
-    background: linear-gradient(90deg, #8b0000, #ff2a2a) !important; /* Blood red gradient */
+    background: linear-gradient(90deg, #8b0000, #ff2a2a) !important; 
     transition: width 0.2s ease-out !important;
   }
 
-  /* Header Styling */
   #header {
     text-align: center !important;
     margin-bottom: 20px !important;
@@ -115,7 +106,6 @@
     vertical-align: middle !important;
   }
 
-  /* Controls Styling */
   #controls {
     text-align: center !important;
     margin: 20px auto !important;
@@ -141,7 +131,6 @@
     margin: 0 4px !important;
   }
 
-  /* Lore Section Styling */
   #lore-section {
     max-width: 900px !important;
     margin: 40px auto !important;
@@ -219,7 +208,6 @@
   <canvas id="gameCanvas"></canvas>
 </div>
 
-<!-- Controls -->
 <div id="controls">
   <kbd>A/D</kbd> MOVE &nbsp;|&nbsp; 
   <kbd>SPACE/W</kbd> JUMP &nbsp;|&nbsp; 
@@ -228,7 +216,6 @@
   <kbd>ESC/P</kbd> PAUSE
 </div>
 
-<!-- Mythological Lore Section -->
 <div id="lore-section">
   <h3><span class="greek-ornament">~</span> The Epic of the Chthonic Kitchen <span class="greek-ornament">~</span></h3>
   
@@ -252,7 +239,6 @@
 
 <script type="module" src="js/main.js"></script>
 
-<!-- CRITICAL FIX: Stops the page from jumping when pressing Spacebar or Arrows while playing -->
 <script>
   window.addEventListener("keydown", function(e) {
     if(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
