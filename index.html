@@ -12,37 +12,79 @@
 <style>
   /* 
     CRITICAL OVERRIDES: 
-    1. Forces page to scroll (overriding any external CSS blocking it).
-    2. Shrinks the game container so it doesn't take up the whole screen.
+    Forces page scrolling and applies the Dark Greek aesthetic.
   */
   html, body {
     overflow-y: auto !important;
     overflow-x: hidden !important;
     height: auto !important;
     min-height: 100vh !important;
-    background-color: #050505 !important;
+    background-color: #080505 !important; /* Deep Stygian black/red */
+    background-image: radial-gradient(circle at center, #1a0a0a 0%, #050505 100%) !important;
     margin: 0 !important;
     padding: 20px 0 !important;
     font-family: 'Cinzel', serif !important;
   }
 
-  /* Shrinks and centers the game box */
+  /* Shrinks and centers the game box with a Greek Double Gold border */
   #gameContainer {
     width: 100% !important;
-    max-width: 900px !important; /* Adjust this to make the game box smaller/larger */
+    max-width: 900px !important; 
     margin: 0 auto 20px auto !important;
     position: relative !important;
-    border: 4px solid #2a0808 !important;
+    border: 6px double #d4af37 !important; /* Classical gold border */
     border-radius: 4px !important;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.1) !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 30px rgba(212, 175, 55, 0.15) !important;
+    background-color: #111 !important;
   }
 
   #gameCanvas {
     display: block !important;
     width: 100% !important;
     height: auto !important;
-    aspect-ratio: 16/9 !important; /* Keeps the game aspect ratio intact */
-    background-color: #111 !important;
+    aspect-ratio: 16/9 !important;
+    background-color: transparent !important;
+  }
+
+  /* FIX: Forces the UI to spread across the top evenly */
+  #ui {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 15px 25px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    color: #d4af37 !important;
+    z-index: 10 !important;
+    pointer-events: none !important;
+    text-shadow: 2px 2px 4px #000000, 0 0 10px rgba(0,0,0,0.8) !important; /* High contrast text */
+    font-weight: 700 !important;
+    letter-spacing: 1px !important;
+  }
+
+  /* Ensures individual UI children don't collapse */
+  #ui > div {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  /* Stylized Classical Health Bar */
+  #hpBar {
+    width: 180px !important;
+    height: 14px !important;
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    border: 1px solid #d4af37 !important;
+    box-shadow: inset 0 0 5px black !important;
+  }
+
+  #hpFill {
+    height: 100% !important;
+    background: linear-gradient(90deg, #8b0000, #ff2a2a) !important; /* Blood red gradient */
+    transition: width 0.2s ease-out !important;
   }
 
   /* Header Styling */
@@ -53,17 +95,18 @@
 
   #header h1 {
     font-family: 'Cinzel Decorative', serif !important;
-    font-size: 2.5rem !important;
-    color: #d4af37 !important; /* Tarnished Gold */
-    text-shadow: 0 0 15px rgba(212, 175, 55, 0.4) !important;
+    font-size: 2.8rem !important;
+    color: #d4af37 !important; 
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.4), 0 5px 10px black !important;
     margin: 0 0 5px 0 !important;
   }
 
   #header h2 {
     font-size: 1.2rem !important;
-    color: #8b0000 !important; /* Deep Blood Red */
-    letter-spacing: 4px !important;
+    color: #a02020 !important;
+    letter-spacing: 6px !important;
     margin: 0 !important;
+    text-transform: uppercase !important;
   }
 
   .greek-ornament {
@@ -72,41 +115,29 @@
     vertical-align: middle !important;
   }
 
-  /* UI Styling Overrides */
-  #ui {
-    position: absolute !important;
-    top: 10px !important;
-    left: 10px !important;
-    right: 10px !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    color: #d4af37 !important;
-    z-index: 10 !important;
-    pointer-events: none !important;
-  }
-
   /* Controls Styling */
   #controls {
     text-align: center !important;
     margin: 20px auto !important;
     color: #b0a89c !important;
     font-size: 0.9rem !important;
-    letter-spacing: 1px !important;
+    letter-spacing: 1.5px !important;
     max-width: 900px !important;
     padding: 15px !important;
     background: rgba(15, 15, 15, 0.8) !important;
-    border: 1px solid #333 !important;
+    border: 1px solid #3a0303 !important;
     border-radius: 4px !important;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8) !important;
   }
 
   kbd {
-    background: #111 !important;
+    background: #0a0a0a !important;
     color: #d4af37 !important;
     border: 1px solid #4a0404 !important;
     border-radius: 4px !important;
     padding: 3px 8px !important;
     font-family: monospace !important;
-    box-shadow: 0 3px 0 #3a0303 !important;
+    box-shadow: 0 3px 0 #2a0202 !important;
     margin: 0 4px !important;
   }
 
@@ -117,10 +148,11 @@
     text-align: center !important;
     color: #d4af37 !important;
     padding: 30px !important;
-    background: linear-gradient(180deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%) !important;
-    border: 1px solid #4a0404 !important;
+    background: linear-gradient(180deg, rgba(25, 5, 5, 0.95) 0%, rgba(10, 5, 5, 0.98) 100%) !important;
+    border: 2px solid #4a0404 !important;
+    border-top: 4px solid #d4af37 !important;
     border-radius: 8px !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(212, 175, 55, 0.03) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(212, 175, 55, 0.05) !important;
   }
 
   #lore-section h3 {
@@ -141,23 +173,23 @@
   .lore-card {
     flex: 1 !important;
     min-width: 250px !important;
-    background: rgba(0, 0, 0, 0.7) !important;
+    background: rgba(0, 0, 0, 0.8) !important;
     padding: 20px !important;
-    border-top: 2px solid #8b0000 !important;
+    border-top: 2px solid #a02020 !important;
     text-align: left !important;
     transition: transform 0.3s ease !important;
   }
 
   .lore-card:hover {
     transform: translateY(-4px) !important;
-    box-shadow: 0 6px 20px rgba(139, 0, 0, 0.5) !important;
+    box-shadow: 0 6px 20px rgba(160, 32, 32, 0.4) !important;
   }
 
   .lore-card h4 {
     font-size: 1.2rem !important;
     color: #ff4500 !important;
     margin: 0 0 15px 0 !important;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
+    border-bottom: 1px dashed rgba(212, 175, 55, 0.3) !important;
     padding-bottom: 10px !important;
   }
 
@@ -165,7 +197,7 @@
     font-family: sans-serif !important;
     font-size: 0.95rem !important;
     line-height: 1.6 !important;
-    color: #b0a89c !important;
+    color: #c0b8ac !important;
     margin: 0 !important;
   }
 </style>
@@ -173,21 +205,21 @@
 <body>
 
 <div id="header">
-  <h1><span class="greek-ornament">✦</span> The Banan-Odyssey <span class="greek-ornament">✦</span></h1>
+  <h1><span class="greek-ornament">✦</span> 🍌 THE BANAN-ODYSSEY 🍌 <span class="greek-ornament">✦</span></h1>
   <h2>Descent into Tartarus</h2>
 </div>
 
 <div id="gameContainer">
   <div id="ui">
-    <div id="hpBar"><div id="hpFill" style="width:100%; background: #8b0000; height: 10px;"></div></div>
+    <div id="hpBar"><div id="hpFill" style="width:100%;"></div></div>
     <div id="waveInfo">WAVE 1</div>
     <div id="score">SCORE: 0</div>
-    <div id="nectarUi">NECTAR: 0</div>
+    <div id="nectarUi">NECTAR: 0 💧</div>
   </div>
   <canvas id="gameCanvas"></canvas>
 </div>
 
-<!-- Updated Controls with ESC/P -->
+<!-- Controls -->
 <div id="controls">
   <kbd>A/D</kbd> MOVE &nbsp;|&nbsp; 
   <kbd>SPACE/W</kbd> JUMP &nbsp;|&nbsp; 
@@ -202,7 +234,7 @@
   
   <div class="lore-grid">
     <div class="lore-card">
-      <h4>Odysseus, The Potassium Hoplite</h4>
+      <h4>Odysseus 🍌, The Potassium Hoplite</h4>
       <p>A battle-hardened veteran of the ten-year Trojan Food Fight, Odysseus seeks only to return to the sacred, sunlit Fruit Bowl of Ithaca. Cast into the abyssal depths of Tartarus by the wrath of the culinary gods, he must rely on his razor-sharp peel-dash and unyielding spirit. His rind may bruise, but his resolve never yields.</p>
     </div>
     
@@ -213,7 +245,7 @@
 
     <div class="lore-card">
       <h4>Charybdis, The Abyssal Maw</h4>
-      <p>The great mechanical terror of the Stygian Sink. A vortex of grinding steel blades and churning dark waters, Charybdis pulls all who wander too close into its inescapable metallic depths. It stands as the final, grueling barrier between Odysseus and the upper realms.</p>
+      <p>The great mechanical terror of the Stygian Sink. A vortex of grinding steel blades and churning dark waters, Charybdis pulls all who wander too close into its inescapable metallic depths. It stands as the final, grueling barrier between our hero and the upper realms.</p>
     </div>
   </div>
 </div>
@@ -223,7 +255,6 @@
 <!-- CRITICAL FIX: Stops the page from jumping when pressing Spacebar or Arrows while playing -->
 <script>
   window.addEventListener("keydown", function(e) {
-    // Only prevent default scrolling if the keys are used for game controls
     if(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
         e.preventDefault();
     }
