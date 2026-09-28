@@ -5,24 +5,230 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Banan-odyssey: Tartarus</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+
+<style>
+  /* 
+    CRITICAL OVERRIDES: 
+    1. Forces page to scroll (overriding any external CSS blocking it).
+    2. Shrinks the game container so it doesn't take up the whole screen.
+  */
+  html, body {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    background-color: #050505 !important;
+    margin: 0 !important;
+    padding: 20px 0 !important;
+    font-family: 'Cinzel', serif !important;
+  }
+
+  /* Shrinks and centers the game box */
+  #gameContainer {
+    width: 100% !important;
+    max-width: 900px !important; /* Adjust this to make the game box smaller/larger */
+    margin: 0 auto 20px auto !important;
+    position: relative !important;
+    border: 4px solid #2a0808 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.1) !important;
+  }
+
+  #gameCanvas {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16/9 !important; /* Keeps the game aspect ratio intact */
+    background-color: #111 !important;
+  }
+
+  /* Header Styling */
+  #header {
+    text-align: center !important;
+    margin-bottom: 20px !important;
+  }
+
+  #header h1 {
+    font-family: 'Cinzel Decorative', serif !important;
+    font-size: 2.5rem !important;
+    color: #d4af37 !important; /* Tarnished Gold */
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.4) !important;
+    margin: 0 0 5px 0 !important;
+  }
+
+  #header h2 {
+    font-size: 1.2rem !important;
+    color: #8b0000 !important; /* Deep Blood Red */
+    letter-spacing: 4px !important;
+    margin: 0 !important;
+  }
+
+  .greek-ornament {
+    color: #ff4500 !important;
+    font-size: 1.5rem !important;
+    vertical-align: middle !important;
+  }
+
+  /* UI Styling Overrides */
+  #ui {
+    position: absolute !important;
+    top: 10px !important;
+    left: 10px !important;
+    right: 10px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    color: #d4af37 !important;
+    z-index: 10 !important;
+    pointer-events: none !important;
+  }
+
+  /* Controls Styling */
+  #controls {
+    text-align: center !important;
+    margin: 20px auto !important;
+    color: #b0a89c !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 1px !important;
+    max-width: 900px !important;
+    padding: 15px !important;
+    background: rgba(15, 15, 15, 0.8) !important;
+    border: 1px solid #333 !important;
+    border-radius: 4px !important;
+  }
+
+  kbd {
+    background: #111 !important;
+    color: #d4af37 !important;
+    border: 1px solid #4a0404 !important;
+    border-radius: 4px !important;
+    padding: 3px 8px !important;
+    font-family: monospace !important;
+    box-shadow: 0 3px 0 #3a0303 !important;
+    margin: 0 4px !important;
+  }
+
+  /* Lore Section Styling */
+  #lore-section {
+    max-width: 900px !important;
+    margin: 40px auto !important;
+    text-align: center !important;
+    color: #d4af37 !important;
+    padding: 30px !important;
+    background: linear-gradient(180deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%) !important;
+    border: 1px solid #4a0404 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(212, 175, 55, 0.03) !important;
+  }
+
+  #lore-section h3 {
+    font-family: 'Cinzel Decorative', serif !important;
+    font-size: 2rem !important;
+    letter-spacing: 2px !important;
+    margin: 0 0 25px 0 !important;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3) !important;
+  }
+
+  .lore-grid {
+    display: flex !important;
+    gap: 20px !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  .lore-card {
+    flex: 1 !important;
+    min-width: 250px !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    padding: 20px !important;
+    border-top: 2px solid #8b0000 !important;
+    text-align: left !important;
+    transition: transform 0.3s ease !important;
+  }
+
+  .lore-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 6px 20px rgba(139, 0, 0, 0.5) !important;
+  }
+
+  .lore-card h4 {
+    font-size: 1.2rem !important;
+    color: #ff4500 !important;
+    margin: 0 0 15px 0 !important;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
+    padding-bottom: 10px !important;
+  }
+
+  .lore-card p {
+    font-family: sans-serif !important;
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+    color: #b0a89c !important;
+    margin: 0 !important;
+  }
+</style>
 </head>
 <body>
+
 <div id="header">
-  <h1><span class="greek-ornament">~</span> The Banan-Odyssey <span class="greek-ornament">~</span></h1>
+  <h1><span class="greek-ornament">✦</span> The Banan-Odyssey <span class="greek-ornament">✦</span></h1>
   <h2>Descent into Tartarus</h2>
 </div>
+
 <div id="gameContainer">
   <div id="ui">
-    <div id="hpBar"><div id="hpFill" style="width:100%"></div></div>
+    <div id="hpBar"><div id="hpFill" style="width:100%; background: #8b0000; height: 10px;"></div></div>
     <div id="waveInfo">WAVE 1</div>
     <div id="score">SCORE: 0</div>
     <div id="nectarUi">NECTAR: 0</div>
   </div>
   <canvas id="gameCanvas"></canvas>
 </div>
-<div id="controls">A/D: MOVE &nbsp;|&nbsp; SPACE/W: JUMP &nbsp;|&nbsp; SHIFT: DODGE &nbsp;|&nbsp; CLICK/J: SLASH &nbsp;|&nbsp; ESC/P: PAUSE</div>
+
+<!-- Updated Controls with ESC/P -->
+<div id="controls">
+  <kbd>A/D</kbd> MOVE &nbsp;|&nbsp; 
+  <kbd>SPACE/W</kbd> JUMP &nbsp;|&nbsp; 
+  <kbd>SHIFT</kbd> DODGE &nbsp;|&nbsp; 
+  <kbd>CLICK/J</kbd> SLASH &nbsp;|&nbsp; 
+  <kbd>ESC/P</kbd> PAUSE
+</div>
+
+<!-- Mythological Lore Section -->
+<div id="lore-section">
+  <h3><span class="greek-ornament">~</span> The Epic of the Chthonic Kitchen <span class="greek-ornament">~</span></h3>
+  
+  <div class="lore-grid">
+    <div class="lore-card">
+      <h4>Odysseus, The Potassium Hoplite</h4>
+      <p>A battle-hardened veteran of the ten-year Trojan Food Fight, Odysseus seeks only to return to the sacred, sunlit Fruit Bowl of Ithaca. Cast into the abyssal depths of Tartarus by the wrath of the culinary gods, he must rely on his razor-sharp peel-dash and unyielding spirit. His rind may bruise, but his resolve never yields.</p>
+    </div>
+    
+    <div class="lore-card">
+      <h4>The Obsidian Cyclops</h4>
+      <p>Once noble guardians of the pantry, these horrors have been corrupted by the dark rot of the Underworld. Encased in a jagged, volcanic crust, their singular, unblinking crimson eyes seek out fresh produce to incinerate in the eternal ovens of the deep.</p>
+    </div>
+
+    <div class="lore-card">
+      <h4>Charybdis, The Abyssal Maw</h4>
+      <p>The great mechanical terror of the Stygian Sink. A vortex of grinding steel blades and churning dark waters, Charybdis pulls all who wander too close into its inescapable metallic depths. It stands as the final, grueling barrier between Odysseus and the upper realms.</p>
+    </div>
+  </div>
+</div>
+
 <script type="module" src="js/main.js"></script>
+
+<!-- CRITICAL FIX: Stops the page from jumping when pressing Spacebar or Arrows while playing -->
+<script>
+  window.addEventListener("keydown", function(e) {
+    // Only prevent default scrolling if the keys are used for game controls
+    if(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }
+  }, false);
+</script>
+
 </body>
 </html>
